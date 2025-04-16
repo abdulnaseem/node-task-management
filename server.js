@@ -10,7 +10,7 @@ const app = express();
 app.use(cors({
     origin: [
         'http://localhost:5173',
-        'https://task-management-nine-taupe.vercel.app/'
+        'https://task-management-nine-taupe.vercel.app'
     ]
 }));
 app.use(express.json());
