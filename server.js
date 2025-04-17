@@ -1,4 +1,5 @@
 require('dotenv').config();
+const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const axios = require('axios'); // Added for keep-alive
@@ -6,8 +7,7 @@ const taskRoutes = require('./routes/taskRoutes');
 
 const app = express();
 
-//middleware
-// Enhanced CORS configuration
+// CORS configuration
 const allowedOrigins = [
   'http://localhost:5173',
   'https://task-management-nine-taupe.vercel.app'
@@ -27,9 +27,7 @@ app.use(cors({
 
 app.use(express.json());
 
-//database
-mongoose.connect(process.env.MONGODB_URI)
-// Improved MongoDB connection with retry logic
+// MongoDB connection with retry logic
 const connectWithRetry = () => {
   mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log("Connected to MongoDB"))
@@ -40,7 +38,7 @@ const connectWithRetry = () => {
 };
 connectWithRetry();
 
-// Enhanced keep-alive function
+// keep-alive function
 const startKeepAlive = () => {
   const pingInterval = 14 * 60 * 1000; // 14 minutes
   const pingUrl = `http://localhost:${process.env.PORT || 5000}/api/tasks/health`;
@@ -57,7 +55,6 @@ const startKeepAlive = () => {
       .catch(err => console.log('Keep-alive failed:', err.message));
   };
 
-//routes
   // Initial ping after 1 minute
   setTimeout(pingServer, 60000);
   // Regular pings
@@ -72,7 +69,6 @@ if (process.env.NODE_ENV === 'production') {
 // Routes
 app.use('/api/tasks', taskRoutes);
 
-//start the server
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -81,9 +77,9 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-})
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+// })
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
