@@ -59,7 +59,7 @@ exports.updateTaskStatus = async(req, res) => {
         )
 
         if(!task) {
-            res.status(404).json({ success: false, error: 'Task not found' });
+            return res.status(404).json({ success: false, error: 'Task not found' });
         }
 
         res.status(200).json({ success: true, data: task });
@@ -76,7 +76,7 @@ exports.deleteTask = async(req, res) => {
         const task = await Task.findByIdAndDelete(req.params.id);
 
         if(!task) {
-            res.status(404).json({ status: false, error: 'Task not found' });
+            return res.status(404).json({ status: false, error: 'Task not found' });
         }
 
         res.status(200).json({ success: true, data: task })
