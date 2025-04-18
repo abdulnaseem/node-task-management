@@ -38,9 +38,9 @@ exports.createTask = async(req, res) => {
         const task = await Task.create(req.body);
         res.status(201).json({ success: true, data: task });
     } catch(error) {
-        if(error.name === 'ValidationError') {
-            const message = Object.values(error.error).map(value => value.message);
-            res.status(400).json({ success: false, error: message });
+        if (error.name === 'ValidationError') {
+            const messages = Object.values(error.errors).map(value => value.message);
+            res.status(400).json({ success: false, error: messages });
         } else {
             res.status(500).json({ success: false, error: 'Server Error' });
         }
